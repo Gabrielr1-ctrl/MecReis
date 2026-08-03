@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Serviços - Mecânica Reis</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <style>
+        .services-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .services-list {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Sidebar Exclusiva do Cliente -->
+    <aside class="sidebar">
+        <a href="#" class="sidebar-logo">
+            Mecânica<span>Reis</span>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="cliente-servicos.html" class="nav-link active">📅 Meus Serviços</a></li>
+            <li><a href="../index.html" class="nav-link" style="margin-top: auto; color: var(--danger);">🚪 Sair</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Meus Serviços</h1>
+            <div class="user-info">
+                <span>Olá, <strong>Cliente</strong></span>
+            </div>
+        </div>
+
+        <div class="services-list glass">
+            <div class="services-header">
+                <h2>Histórico do Meu Veículo</h2>
+                <button class="btn btn-primary" onclick="openModal()">+ Solicitar Agendamento</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Veículo</th>
+                            <th>Placa</th>
+                            <th>Descrição do Serviço</th>
+                            <th>Valor</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Honda Civic</td>
+                            <td>ABC-1234</td>
+                            <td>Revisão de freios (Agendado)</td>
+                            <td>-</td>
+                            <td>Hoje, 14:00</td>
+                            <td><span class="badge badge-warning">Aguardando</span></td>
+                        </tr>
+                        <tr>
+                            <td>Honda Civic</td>
+                            <td>ABC-1234</td>
+                            <td>Troca de Óleo e Filtros</td>
+                            <td>R$ 280,00</td>
+                            <td>15/05/2026</td>
+                            <td><span class="badge badge-success">Concluído</span></td>
+                        </tr>
+                        <tr>
+                            <td>Honda Civic</td>
+                            <td>ABC-1234</td>
+                            <td>Alinhamento e Balanceamento</td>
+                            <td>R$ 120,00</td>
+                            <td>10/12/2025</td>
+                            <td><span class="badge badge-success">Concluído</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal Solicitar Agendamento -->
+<div class="modal-overlay" id="agendamento-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Solicitar Agendamento</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <form onsubmit="salvarAgendamento(event)">
+            <div class="form-group">
+                <label>Selecione seu Veículo</label>
+                <select class="form-control" required>
+                    <option value="">-- Escolha --</option>
+                    <option value="civic">Honda Civic (ABC-1234)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Preferência de Data e Hora</label>
+                <input type="datetime-local" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Descreva o Problema ou Serviço (Ex: Revisão, Barulho)</label>
+                <textarea class="form-control" rows="3" placeholder="Qual o problema do veículo?" required></textarea>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+                <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Enviar Solicitação</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+    function openModal() {
+        document.getElementById('agendamento-modal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('agendamento-modal').classList.remove('active');
+    }
+
+    function salvarAgendamento(event) {
+        event.preventDefault();
+        alert('Sua solicitação de agendamento foi enviada para a oficina! Entraremos em contato em breve.');
+        closeModal();
+    }
+</script>
+</body>
+</html>

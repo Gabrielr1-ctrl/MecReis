@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serviços - Mecânica Reis</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <style>
+        .services-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .services-list {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="dashboard.html" class="sidebar-logo">
+            Mecânica<span>Reis</span>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="dashboard.html" class="nav-link">📊 Dashboard</a></li>
+            <li><a href="veiculos.html" class="nav-link">🚗 Veículos</a></li>
+            <li><a href="servicos.html" class="nav-link active">🔧 Serviços</a></li>
+            <li><a href="estoque.html" class="nav-link">📦 Estoque</a></li>
+            <li><a href="../index.html" class="nav-link" style="margin-top: auto; color: var(--danger);">🚪 Sair</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Gestão de Serviços</h1>
+            <button class="btn btn-primary" onclick="openModal()">+ Novo Agendamento</button>
+        </div>
+
+        <div class="services-list glass">
+            <div class="services-header">
+                <h2>Histórico e Agendamentos</h2>
+                <div style="display: flex; gap: 1rem;">
+                    <select class="form-control" style="width: auto; padding: 0.5rem;">
+                        <option>Todos os Status</option>
+                        <option>Agendado</option>
+                        <option>Em Andamento</option>
+                        <option>Concluído</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>OS #</th>
+                            <th>Placa / Veículo</th>
+                            <th>Mecânico</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1001</td>
+                            <td>ABC-1234 (Civic)</td>
+                            <td>Carlos</td>
+                            <td>22/06/2026</td>
+                            <td><span class="badge badge-warning">Agendado</span></td>
+                            <td><button class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Ver</button></td>
+                        </tr>
+                        <tr>
+                            <td>1002</td>
+                            <td>XYZ-9876 (Toro)</td>
+                            <td>Roberto</td>
+                            <td>22/06/2026</td>
+                            <td><span class="badge badge-success" style="background: rgba(59, 130, 246, 0.1); color: var(--accent-primary);">Em Andamento</span></td>
+                            <td><button class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Ver</button></td>
+                        </tr>
+                        <tr>
+                            <td>0999</td>
+                            <td>DEF-5678 (Gol)</td>
+                            <td>Carlos</td>
+                            <td>20/06/2026</td>
+                            <td><span class="badge badge-success">Concluído</span></td>
+                            <td><button class="btn btn-outline" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Ver</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal Novo Agendamento -->
+<div class="modal-overlay" id="agendamento-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Novo Agendamento</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <form onsubmit="salvarAgendamento(event)">
+            <div class="form-group">
+                <label>Placa do Veículo (Cadastrado)</label>
+                <input type="text" class="form-control" placeholder="ABC-1234" required style="text-transform: uppercase;">
+            </div>
+            <div class="form-group">
+                <label>Data e Hora</label>
+                <input type="datetime-local" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Descrição do Problema</label>
+                <textarea class="form-control" rows="3" placeholder="Ex: Barulho no freio..." required></textarea>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+                <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Confirmar Agendamento</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+    function openModal() {
+        document.getElementById('agendamento-modal').classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('agendamento-modal').classList.remove('active');
+    }
+
+    function salvarAgendamento(event) {
+        event.preventDefault();
+        alert('Agendamento realizado com sucesso! (Simulação)');
+        closeModal();
+    }
+</script>
+</body>
+</html>

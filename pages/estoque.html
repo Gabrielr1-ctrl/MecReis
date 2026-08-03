@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque - Mecânica Reis</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <style>
+        .stock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .stock-list {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .search-bar {
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: rgba(0,0,0,0.2);
+            color: white;
+            width: 300px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        /* Modal Styles reused from global context or specific here */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            width: 100%;
+            max-width: 400px;
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .low-stock {
+            color: var(--danger);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="dashboard.html" class="sidebar-logo">
+            Mecânica<span>Reis</span>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="dashboard.html" class="nav-link">📊 Dashboard</a></li>
+            <li><a href="veiculos.html" class="nav-link">🚗 Veículos</a></li>
+            <li><a href="servicos.html" class="nav-link">🔧 Serviços</a></li>
+            <li><a href="estoque.html" class="nav-link active">📦 Estoque</a></li>
+            <li><a href="../index.html" class="nav-link" style="margin-top: auto; color: var(--danger);">🚪 Sair</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Gestão de Estoque</h1>
+            <button class="btn btn-primary">+ Nova Peça</button>
+        </div>
+
+        <div class="stock-list glass">
+            <div class="stock-header">
+                <input type="text" class="search-bar" placeholder="Buscar peça...">
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Descrição da Peça</th>
+                            <th>Categoria</th>
+                            <th>Quantidade</th>
+                            <th>Preço Unitário</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>P-001</td>
+                            <td>Pastilha de Freio (Jogo)</td>
+                            <td>Freios</td>
+                            <td>12 un.</td>
+                            <td>R$ 150,00</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn btn-success btn-icon" onclick="openModal('entrada', 'Pastilha de Freio')">+ Ent.</button>
+                                    <button class="btn btn-outline btn-icon" style="color: var(--danger); border-color: var(--danger);" onclick="openModal('saida', 'Pastilha de Freio')">- Saída</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>O-045</td>
+                            <td>Óleo de Motor 5W30 (1L)</td>
+                            <td>Fluidos</td>
+                            <td class="low-stock">2 un.</td>
+                            <td>R$ 45,00</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn btn-success btn-icon" onclick="openModal('entrada', 'Óleo de Motor')">+ Ent.</button>
+                                    <button class="btn btn-outline btn-icon" style="color: var(--danger); border-color: var(--danger);" onclick="openModal('saida', 'Óleo de Motor')">- Saída</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>F-012</td>
+                            <td>Filtro de Ar</td>
+                            <td>Filtros</td>
+                            <td>25 un.</td>
+                            <td>R$ 35,00</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn btn-success btn-icon" onclick="openModal('entrada', 'Filtro de Ar')">+ Ent.</button>
+                                    <button class="btn btn-outline btn-icon" style="color: var(--danger); border-color: var(--danger);" onclick="openModal('saida', 'Filtro de Ar')">- Saída</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Modal Movimentação -->
+<div class="modal-overlay" id="movimentacao-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modal-title">Movimentação</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <form onsubmit="salvarMovimentacao(event)">
+            <p id="modal-peca-nome" style="margin-bottom: 1rem; color: var(--text-secondary);"></p>
+            
+            <div class="form-group">
+                <label>Quantidade</label>
+                <input type="number" class="form-control" placeholder="Ex: 5" min="1" required>
+            </div>
+            <div class="form-group">
+                <label>Observação (Opcional)</label>
+                <input type="text" class="form-control" placeholder="Motivo...">
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+                <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+                <button type="submit" class="btn btn-primary" id="btn-confirm-mov">Confirmar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+    function openModal(tipo, pecaNome) {
+        const modal = document.getElementById('movimentacao-modal');
+        const title = document.getElementById('modal-title');
+        const pecaLabel = document.getElementById('modal-peca-nome');
+        const btnConfirm = document.getElementById('btn-confirm-mov');
+
+        if (tipo === 'entrada') {
+            title.textContent = 'Entrada de Estoque';
+            btnConfirm.className = 'btn btn-success';
+        } else {
+            title.textContent = 'Baixa no Estoque';
+            btnConfirm.className = 'btn btn-primary';
+            btnConfirm.style.backgroundColor = 'var(--danger)';
+        }
+
+        pecaLabel.textContent = `Peça: ${pecaNome}`;
+        modal.classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('movimentacao-modal').classList.remove('active');
+    }
+
+    function salvarMovimentacao(event) {
+        event.preventDefault();
+        alert('Estoque atualizado com sucesso! (Simulação)');
+        closeModal();
+    }
+</script>
+</body>
+</html>

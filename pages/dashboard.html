@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Mecânica Reis</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <style>
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .stat-card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .icon-blue { background: rgba(59, 130, 246, 0.1); color: var(--accent-primary); }
+        .icon-green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .icon-yellow { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .icon-red { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+        .recent-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--glass-border);
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="dashboard.html" class="sidebar-logo">
+            Mecânica<span>Reis</span>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="dashboard.html" class="nav-link active">📊 Dashboard</a></li>
+            <li><a href="veiculos.html" class="nav-link">🚗 Veículos</a></li>
+            <li><a href="servicos.html" class="nav-link">🔧 Serviços</a></li>
+            <li><a href="estoque.html" class="nav-link">📦 Estoque</a></li>
+            <li><a href="../index.html" class="nav-link" style="margin-top: auto; color: var(--danger);">🚪 Sair</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Visão Geral</h1>
+            <div class="user-info">
+                <span>Olá, <strong>Gilberto</strong></span>
+            </div>
+        </div>
+
+        <div class="dashboard-cards">
+            <!-- Card 1 -->
+            <div class="stat-card glass" onclick="window.location.href='servicos.html'" style="cursor: pointer;" title="Ir para Serviços">
+                <div class="stat-card-header">
+                    <span>Agendamentos Hoje</span>
+                    <div class="stat-icon icon-blue">📅</div>
+                </div>
+                <div class="stat-card-value">12</div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="stat-card glass" onclick="window.location.href='servicos.html'" style="cursor: pointer;" title="Ir para Serviços">
+                <div class="stat-card-header">
+                    <span>Serviços em Andamento</span>
+                    <div class="stat-icon icon-yellow">⚙️</div>
+                </div>
+                <div class="stat-card-value">4</div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="stat-card glass" onclick="window.location.href='servicos.html'" style="cursor: pointer;" title="Ir para Serviços">
+                <div class="stat-card-header">
+                    <span>Serviços Concluídos (Mês)</span>
+                    <div class="stat-icon icon-green">✅</div>
+                </div>
+                <div class="stat-card-value">85</div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="stat-card glass" onclick="window.location.href='estoque.html'" style="cursor: pointer;" title="Ir para Estoque">
+                <div class="stat-card-header">
+                    <span>Peças com Estoque Baixo</span>
+                    <div class="stat-icon icon-red">⚠️</div>
+                </div>
+                <div class="stat-card-value">6</div>
+            </div>
+        </div>
+
+        <!-- Recent Activity Table -->
+        <div class="recent-section">
+            <h2 style="margin-bottom: 1.5rem; font-size: 1.2rem;">Agendamentos Próximos</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Veículo</th>
+                            <th>Placa</th>
+                            <th>Data/Hora</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>João Silva</td>
+                            <td>Honda Civic</td>
+                            <td>ABC-1234</td>
+                            <td>Hoje, 14:00</td>
+                            <td><span class="badge badge-warning">Aguardando</span></td>
+                        </tr>
+                        <tr>
+                            <td>Maria Oliveira</td>
+                            <td>Fiat Toro</td>
+                            <td>XYZ-9876</td>
+                            <td>Hoje, 15:30</td>
+                            <td><span class="badge badge-success">Em pátio</span></td>
+                        </tr>
+                        <tr>
+                            <td>Carlos Santos</td>
+                            <td>VW Gol</td>
+                            <td>DEF-5678</td>
+                            <td>Amanhã, 09:00</td>
+                            <td><span class="badge badge-warning">Agendado</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

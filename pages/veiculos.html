@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veículos - Mecânica Reis</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <style>
+        .form-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--glass-border);
+            max-width: 800px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: var(--accent-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="dashboard.html" class="sidebar-logo">
+            Mecânica<span>Reis</span>
+        </a>
+        <ul class="nav-menu">
+            <li><a href="dashboard.html" class="nav-link">📊 Dashboard</a></li>
+            <li><a href="veiculos.html" class="nav-link active">🚗 Veículos</a></li>
+            <li><a href="servicos.html" class="nav-link">🔧 Serviços</a></li>
+            <li><a href="estoque.html" class="nav-link">📦 Estoque</a></li>
+            <li><a href="../index.html" class="nav-link" style="margin-top: auto; color: var(--danger);">🚪 Sair</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Cadastro de Veículos</h1>
+        </div>
+
+        <div class="form-section glass">
+            <form id="veiculo-form" onsubmit="salvarVeiculo(event)">
+                
+                <h2 class="section-title">Dados do Proprietário</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nome-dono">Nome Completo</label>
+                        <input type="text" id="nome-dono" class="form-control" placeholder="Ex: João da Silva" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="text" id="telefone" class="form-control" placeholder="(00) 00000-0000" required>
+                    </div>
+                </div>
+
+                <h2 class="section-title mt-4">Dados do Veículo</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="marca">Marca</label>
+                        <input type="text" id="marca" class="form-control" placeholder="Ex: Honda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modelo">Modelo</label>
+                        <input type="text" id="modelo" class="form-control" placeholder="Ex: Civic" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="placa">Placa</label>
+                        <input type="text" id="placa" class="form-control" placeholder="ABC-1234" required style="text-transform: uppercase;">
+                    </div>
+                    <div class="form-group">
+                        <label for="ano">Ano</label>
+                        <input type="number" id="ano" class="form-control" placeholder="2022" required>
+                    </div>
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="obs">Observações Iniciais</label>
+                    <textarea id="obs" class="form-control" rows="3" placeholder="Detalhes extras sobre o veículo..."></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn btn-outline" onclick="document.getElementById('veiculo-form').reset()">Limpar</button>
+                    <button type="submit" class="btn btn-primary">Cadastrar Veículo</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+    function salvarVeiculo(event) {
+        event.preventDefault();
+        alert('Veículo cadastrado com sucesso! (Simulação)');
+        document.getElementById('veiculo-form').reset();
+    }
+</script>
+</body>
+</html>
